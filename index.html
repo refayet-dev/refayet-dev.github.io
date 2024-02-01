@@ -1,11 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refayet</title>
-</head>
-<body>
-    <h1>Refayet</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anim</title>
+    <script src="https://unpkg.com/@rive-app/canvas@2.9.1"></script>
+  </head>
+  <body>
+    <div class="animationContainer">
+      <canvas id="canvas" width="100" height="100"></canvas>
+    </div>
+    <script>
+          const canvas = document.getElementById("canvas");
+      let targetX = 0;
+      let targetY = 0;
+      let smoothingFactor = 0.15;
+
+      const r = new rive.Rive({
+        src: "./images/spider.riv",
+        artboard: "Spider",
+        canvas: document.getElementById("canvas"),
+        autoplay: true,
+        stateMachines: "idle-body",
+        fit: "cover",
+      });
+
+    //   document.addEventListener("mousemove", (e) => {
+    //     r.playingAnimationNames.includes("idle-body")
+    //       ? r.play("walk")
+    //       : r.play("idle-body");
+    //     targetX = e.clientX;
+    //     targetY = e.clientY;
+    //   });
+
+    //   function updateCanvasPosition() {
+    //     const canvas = document.getElementById("canvas");
+    //     const currentX = canvas.offsetLeft;
+    //     const currentY = canvas.offsetTop;
+
+    //     const newX = currentX + (targetX - currentX) * smoothingFactor;
+    //     const newY = currentY + (targetY - currentY) * smoothingFactor;
+
+    //     canvas.style.left = newX + "px";
+    //     canvas.style.top = newY + "px";
+
+    //     requestAnimationFrame(updateCanvasPosition);
+    //   }
+
+    //   requestAnimationFrame(updateCanvasPosition);
+
+      document.addEventListener("mousemove", (event) => {
+    const mouseX = event.clientX;
+    const canvasWidth = r.canvas.clientWidth;
+
+    if (mouseX < canvasWidth / 2) {
+        // Mouse on the left side of the canvas
+        r.play("rotate-left");
+        setTimeout(() => {
+            r.play("walk");
+        },1); // Use the actual duration of the 'rotate-left' animation
+    } else {
+        // Mouse on the right side of the canvas
+        r.play("rotate-right");
+        setTimeout(() => {
+            r.play("walk");
+        }, 1); // Use the actual duration of the 'rotate-right' animation
+    }
+});
+
+// You may need to handle the end of the 'walk' animation to transition back to 'idle-body'
+r.on("animationComplete", (animationName) => {
+    if (animationName === "walk") {
+        r.play("idle-body");
+    }
+});
+
+      
+
+    </script>
+  </body>
 </html>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .animationContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .animationContainer canvas {
+    position: absolute;
+  }
+  /* 
+  #animatedElement {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #3498db;
+    animation: bounce 1s infinite alternate;
+  }
+
+  .images {
+    position: absolute;
+    width: 100px; 
+    height: 100px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .images:hover {
+    transform: translateX(
+      20px
+    ); 
+  }
+
+  @keyframes bounce {
+    0% {
+      translate: 0 0;
+    }
+    100% {
+      translate: 0 20px;
+    }
+  } */
+</style>
