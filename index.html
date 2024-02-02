@@ -11,72 +11,95 @@
       <canvas id="canvas" width="100" height="100"></canvas>
     </div>
     <script>
-          const canvas = document.getElementById("canvas");
-      let targetX = 0;
-      let targetY = 0;
-      let smoothingFactor = 0.15;
+      const canvas = document.getElementById("canvas");
+      const canvasPos = { x: 0, y: 0, vx: 5, vy: 5 };
+      const mousePos = { x: 0, y: 0 };
+      const gridSize = 20;
 
       const r = new rive.Rive({
         src: "./images/spider.riv",
         artboard: "Spider",
         canvas: document.getElementById("canvas"),
         autoplay: true,
-        stateMachines: "idle-body",
-        fit: "cover",
+        stateMachines: "spider-machine",
+        fit: rive.Fit.Cover,
+        // onStateChange: (event) => {
+        //       r.stateMachineInputs('walk');
+        //       console.log(event);
+        // },
+        onLoad: () => {
+         
+        },
       });
 
-    //   document.addEventListener("mousemove", (e) => {
-    //     r.playingAnimationNames.includes("idle-body")
-    //       ? r.play("walk")
-    //       : r.play("idle-body");
-    //     targetX = e.clientX;
-    //     targetY = e.clientY;
-    //   });
+      const stateMachineController = r.stateMachineInputs("spider-machine");
 
-    //   function updateCanvasPosition() {
-    //     const canvas = document.getElementById("canvas");
-    //     const currentX = canvas.offsetLeft;
-    //     const currentY = canvas.offsetTop;
+// Add click event listener to the canvas
+        canvas.addEventListener("click", () => {
+          r.play("walk"); // Set the "walk" input to trigger the walk state
+          console.log("State changed to walk");
+        });
 
-    //     const newX = currentX + (targetX - currentX) * smoothingFactor;
-    //     const newY = currentY + (targetY - currentY) * smoothingFactor;
+        const motionMachine = new rive.StateMachineInstance(
+          r.stateMachineByName("rotate-left")
+        );
 
-    //     canvas.style.left = newX + "px";
-    //     canvas.style.top = newY + "px";
+      //       console.log(r.stateMachineInputs("spider-machine"));
 
-    //     requestAnimationFrame(updateCanvasPosition);
-    //   }
+      //   document.addEventListener("click", (event) => {
+      //     const mouseX = event.clientX;
+      //     const canvasWidth = r.canvas.clientWidth;
 
-    //   requestAnimationFrame(updateCanvasPosition);
+      //     // if (mouseX < canvasWidth / 2) {
+      //     //   // Mouse on the left side of the canvas
+      //     //   r.play("rotate-left");
+      //     //   r.stateMachineInputs("spider-machine").setInput("rotate-left", 1);
+      //     //   setTimeout(() => {
+      //     //     r.play("walk");
+      //     //   }, 1); // Use the actual duration of the 'rotate-left' animation
+      //     // } else {
+      //     //   // Mouse on the right side of the canvas
+      //     //   r.play("rotate-right");
+      //     //   r.stateMachineInputs("rotate-right")
+      //     //   setTimeout(() => {
+      //     //     r.play("walk");
+      //     //   }, 1); // Use the actual duration of the 'rotate-right' animation
+      //     // }
+      // });
 
-      document.addEventListener("mousemove", (event) => {
-    const mouseX = event.clientX;
-    const canvasWidth = r.canvas.clientWidth;
+      // document.addEventListener("mousemove", (event) => {
+      //   mousePos.x = event.clientX;
+      //   mousePos.y = event.clientY;
+      // });
 
-    if (mouseX < canvasWidth / 2) {
-        // Mouse on the left side of the canvas
-        r.play("rotate-left");
-        setTimeout(() => {
-            r.play("walk");
-        },1); // Use the actual duration of the 'rotate-left' animation
-    } else {
-        // Mouse on the right side of the canvas
-        r.play("rotate-right");
-        setTimeout(() => {
-            r.play("walk");
-        }, 1); // Use the actual duration of the 'rotate-right' animation
-    }
-});
+      // const updatedPos = () => {
 
-// You may need to handle the end of the 'walk' animation to transition back to 'idle-body'
-r.on("animationComplete", (animationName) => {
-    if (animationName === "walk") {
-        r.play("idle-body");
-    }
-});
+      //   if (Math.abs(mousePos.x - canvasPos.x) < canvasPos.vx) {
+      //     canvasPos.x = canvas.getBoundingClientRect().left;
+      //   } else if (mousePos.x > canvasPos.x) {
+      //     canvasPos.x = canvasPos.vx + canvas.getBoundingClientRect().left;
+      //   } else {
+      //     canvasPos.x = canvas.getBoundingClientRect().left - canvasPos.vx;
+      //   }
 
-      
+      //   if (Math.abs(mousePos.y - canvasPos.y) < canvasPos.vy) {
+      //     canvasPos.y = canvas.getBoundingClientRect().top;
+      //   } else if (mousePos.y > canvasPos.y) {
+      //     canvasPos.y = canvasPos.vy + canvas.getBoundingClientRect().top;
+      //   } else {
+      //     canvasPos.y = canvas.getBoundingClientRect().top - canvasPos.vy;
+      //   }
+      // };
+      // //game loop
+      // function mainLoop() {
+      //   updatedPos();
 
+      //   document.querySelector("canvas").style.left = canvasPos.x + "px";
+      //   document.querySelector("canvas").style.top = canvasPos.y + "px";
+
+      //   window.requestAnimationFrame(mainLoop);
+      // }
+      // window.requestAnimationFrame(mainLoop);
     </script>
   </body>
 </html>
@@ -126,3 +149,185 @@ r.on("animationComplete", (animationName) => {
     }
   } */
 </style>
+
+<!-- const jinish = document.getElementById("canvas");
+const jinishPos = { x: 0, y: 0, vx: 5, vy: 5 };
+const mousePos = { x: 0, y: 0 };
+const ctx = jinish.getContext("2d");
+
+const r = new rive.Rive({
+  src: "./images/spider.riv",
+  artboard: "Spider",
+  canvas: document.getElementById("canvas"),
+  autoplay: true,
+  stateMachines: "idle-body",
+  fit: "cover",
+});
+
+//   document.addEventListener("mousemove", (e) => {
+//     r.playingAnimationNames.includes("idle-body")
+//       ? r.play("walk")
+//       : r.play("idle-body");
+//     targetX = e.clientX;
+//     targetY = e.clientY;
+//   });
+
+//   function updateCanvasPosition() {
+//     const canvas = document.getElementById("canvas");
+//     const currentX = canvas.offsetLeft;
+//     const currentY = canvas.offsetTop;
+
+//     const newX = currentX + (targetX - currentX) * smoothingFactor;
+//     const newY = currentY + (targetY - currentY) * smoothingFactor;
+
+//     canvas.style.left = newX + "px";
+//     canvas.style.top = newY + "px";
+
+//     requestAnimationFrame(updateCanvasPosition);
+//   }
+
+//   requestAnimationFrame(updateCanvasPosition);
+
+// document.addEventListener("mousemove", (event) => {
+//   const mouseX = event.clientX;
+//   const canvasWidth = r.canvas.clientWidth;
+
+//   if (mouseX < canvasWidth / 2) {
+//     // Mouse on the left side of the canvas
+//     r.play("rotate-left");
+//     setTimeout(() => {
+//       r.play("walk");
+//     }, 1); // Use the actual duration of the 'rotate-left' animation
+//   } else {
+//     // Mouse on the right side of the canvas
+//     r.play("rotate-right");
+//     setTimeout(() => {
+//       r.play("walk");
+//     }, 1); // Use the actual duration of the 'rotate-right' animation
+//   }
+// });
+
+// // You may need to handle the end of the 'walk' animation to transition back to 'idle-body'
+// r.on("animationComplete", (animationName) => {
+//   if (animationName === "walk") {
+//     r.play("idle-body");
+//   }
+// });
+// const r = new rive.Rive({
+//   src: "./images/spider.riv",
+//   artboard: "Spider",
+//   canvas: document.getElementById("canvas"),
+//   autoplay: true,
+//   stateMachines: "idle-body",
+//   fit: "cover",
+// });
+
+const cursorPath = []; // Array to store cursor movement points
+
+document.addEventListener("mousemove", (event) => {
+  // cursorPath.push({ x: event.clientX, y: event.clientY });
+  // console.log(cursorPath);
+  // updateSpider();
+
+  mousePos.x = event.clientX;
+  mousePos.y = event.clientY;
+});
+
+function updateSpider() {
+  if (cursorPath.length < 2) {
+    return; // Not enough points to determine movement direction
+  }
+  const spiderPos = {
+    x: document.querySelector("canvas").getBoundingClientRect().x,
+    y: document.querySelector("canvas").getBoundingClientRect().y,
+  };
+  const targetPos = cursorPath[cursorPath.length - 1];
+  const direction = {
+    x: targetPos.x - spiderPos.x,
+    y: targetPos.y - spiderPos.y,
+  };
+
+  const distance = Math.sqrt(
+    direction.x * direction.x + direction.y * direction.y
+  );
+
+  if (distance > 0) {
+    const normalizedDirection = {
+      x: direction.x / distance,
+      y: direction.y / distance,
+    };
+
+    // console.log(normalizedDirection);
+
+    // const angle =
+    //   Math.atan2(normalizedDirection.y, normalizedDirection.x) *
+    //   (180 / Math.PI);
+
+    //   console.log(angle);
+
+    // Determine animation based on cursor position relative to the spider
+    if (normalizedDirection.x > 0) {
+      // Cursor on the right side of the spider
+      // r.rightClick();
+      r.play("rotate-right");
+      r.play("rotate-off");
+      r.play("turn");
+      r.play("walk");
+    } else {
+      // Cursor on the left side of the spider
+      // r.leftClick();
+      r.play("rotate-left");
+      r.play("rotate-off");
+      r.play("turn");
+      r.play("walk");
+    }
+
+    // console.log(document.querySelector("canvas").getBoundingClientRect().x);
+  }
+
+  // Check if the spider has reached the target position
+  const threshold = 5; // Adjust the threshold as needed
+  if (distance < threshold) {
+    // Spider reached the target position
+    r.play("walk-off");
+    r.play("idle-body");
+    cursorPath.splice(0, 1); // Remove the first point from the path
+  }
+}
+
+const updatedPos = () => {
+  const diffX = mousePos.x - jinishPos.x;
+  const diffY = mousePos.y - jinishPos.y;
+  
+  const angel = Math.PI/2 - Math.atan(diffY/diffX)*180/Math.PI;
+
+  // diffX + diffY > 10 & ctx.rotate(angel);
+  // ctx.rotate(angel);
+  // ctx.translate(jinish.width/2,jinish.height/2)
+
+  if (Math.abs(mousePos.x - jinishPos.x) < jinishPos.vx) {
+    jinishPos.x = jinish.getBoundingClientRect().left;
+  } else if (mousePos.x > jinishPos.x) {
+    jinishPos.x = jinishPos.vx + jinish.getBoundingClientRect().left;
+  } else {
+    jinishPos.x = jinish.getBoundingClientRect().left - jinishPos.vx;
+  }
+
+  if (Math.abs(mousePos.y - jinishPos.y) < jinishPos.vy) {
+    jinishPos.y = jinish.getBoundingClientRect().top;
+  } else if (mousePos.y > jinishPos.y) {
+    jinishPos.y = jinishPos.vy + jinish.getBoundingClientRect().top;
+  } else {
+    jinishPos.y = jinish.getBoundingClientRect().top - jinishPos.vy;
+  }
+};
+//game loop
+function mainLoop() {
+  updatedPos();
+
+  document.querySelector("canvas").style.left = jinishPos.x + "px";
+  document.querySelector("canvas").style.top = jinishPos.y + "px";
+
+  window.requestAnimationFrame(mainLoop);
+}
+window.requestAnimationFrame(mainLoop); -->
