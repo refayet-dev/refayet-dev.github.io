@@ -8,8 +8,11 @@ body {
     justify-content: center;
     font-family: 'Roboto', sans-serif;
 }
+body .mantainance{
+    margin: 0 10px;
+}
 body .mantainance .warning {
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: #d30808;
 }
 body .mantainance .redirectToMe {
@@ -20,11 +23,11 @@ body .mantainance .facebook {
     background-color: #4267b2;
     color: black;
     text-decoration: unset;
-    font-size: 2rem;
+    font-size: 1.7rem;
     padding: 10px;
 }
 body .mantainance .linkedIn {
-    font-size: 2rem;
+    font-size: 1.7rem;
     background-color: #0077b5;
     color: white;
     text-decoration: unset;
