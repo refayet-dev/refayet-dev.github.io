@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { emailConfig } from '@/config/email-config';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -43,14 +44,14 @@ export function ContactForm() {
     setIsSubmitting(true);
     try {
       await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        emailConfig.serviceId,
+        emailConfig.templateId,
         {
           from_name: data.name,
           from_email: data.email,
           message: data.message,
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        emailConfig.publicKey
       );
 
       toast({
