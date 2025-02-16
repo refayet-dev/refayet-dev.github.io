@@ -1,0 +1,114 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  &.scrolled {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  &.hidden {
+    transform: translateY(-100%);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .nav {
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--primary-color);
+
+      .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    .desktop-nav {
+      display: none;
+      gap: 2rem;
+      align-items: center;
+
+      @media (min-width: 768px) {
+        display: flex;
+      }
+
+      .nav-link {
+        position: relative;
+        color: var(--text-color);
+        transition: color 0.2s;
+
+        &:hover, &.active {
+          color: var(--primary-color);
+        }
+
+        &.active::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: var(--primary-color);
+        }
+      }
+    }
+
+    .mobile-nav {
+      @media (min-width: 768px) {
+        display: none;
+      }
+
+      .menu-button {
+        padding: 0.5rem;
+        color: var(--text-color);
+
+        .icon {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+
+      .mobile-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 1rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .nav-link {
+          padding: 0.5rem;
+          color: var(--text-color);
+          transition: color 0.2s;
+
+          &:hover, &.active {
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+}

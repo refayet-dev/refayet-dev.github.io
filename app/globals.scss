@@ -1,0 +1,62 @@
+:root {
+  --primary-color: #8b5e34;
+  --text-color: #858585;
+  --background-color: #fff8f3;
+  --accent-color: #d4a373;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+}
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  main {
+    flex: 1;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@import '../components/header/header.scss';
+@import '../components/footer/footer.scss';
+@import '../components/home/hero-section.scss';
+@import '../components/about/about.scss';
+@import '../components/skills/skill-section.scss';
+@import '../components/projects/project-card.scss';
+@import '../components/projects/project-modal.scss';
+@import '../components/contact/contact.scss';
+@import '../components/loader/loader.scss';
